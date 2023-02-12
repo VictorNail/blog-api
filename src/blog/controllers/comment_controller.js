@@ -1,5 +1,6 @@
 const Comment = require("../models/comment");
 const Post = require("../models/post");
+const Profile = require("../../profile/models/profile");
 
 const { getUrl } = require("../../../utils/getter");
 const { removeFields } = require("../../../utils/remover");
@@ -9,7 +10,11 @@ const createComment = async (req, res) => {
 
     try {
         //TODO
-        const comment = new Comment({ ...req.body, id_post: id });
+        const comment = new Comment({ 
+            ...req.body, 
+            id_post: id,
+            owner: (await Profile.findOne({owner: req.account})).id
+        });
 
         req.post.commentsCount++;
 

@@ -8,3 +8,6 @@ req.account = Account.id
 
 ⚠️ ATTENTION à la vérification (Profile.owner === Account.id) pour les method "POST, UPDATE, DELETE" ⚠️
 
+Refaire les methods de Profile
+
+ViCtOrLaInE

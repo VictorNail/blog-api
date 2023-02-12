@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const Profile = require("../../profile/models/profile");
 
 const RESPONSE_MESSAGES = require("../../../__constants__/response_messages");
 
@@ -6,10 +7,11 @@ const { getUrl } = require("../../../utils/getter");
 const { removeFields } = require("../../../utils/remover");
 
 const createPost = async (req, res) => {
-    //TODO
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
+        owner:  (await Profile.findOne({owner: req.account})).id,
+        //id du profil
     });
 
     try {
@@ -72,10 +74,10 @@ const getById = async (req, res) => {
 const updatePost = async (req, res) => {
     const { id } = req.params;
 
-    //TODO
     const update = {
         title: req.body.title,
         content: req.body.content,
+        owner: (await Profile.findOne({owner: req.account})).id,
         updatedAt: Date.now(),
     };
 

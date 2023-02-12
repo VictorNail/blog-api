@@ -13,6 +13,21 @@ const postExistsMiddleware = async function (req, res, next) {
     next();
 };
 
+
+
+const isOwner = async function (req, res, next) {
+    if (!req.body.createdBy) {
+        return res.status(400).json({ msg: "createdBy is required" });
+    }
+
+    const profile = await Profile.findOne({ id: req.body.createdBy }).lean().exec();
+    if (profile.owner !== req.account) {
+        return res.status(401).json({ msg: "Unauthorized" });
+    }
+
+    next();
+};
+
 const contentBodyMiddleware = function (req, res, next) {
     const content = req.body.content;
 
@@ -27,7 +42,9 @@ const contentBodyMiddleware = function (req, res, next) {
     next();
 };
 
+
 module.exports = {
     contentBodyMiddleware,
+    isOwner,
     postExistsMiddleware,
 };
